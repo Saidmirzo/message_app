@@ -1,38 +1,47 @@
-import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:message_app/features/auth/data/models/user_register_model.dart';
 import 'package:message_app/logic/database_service.dart';
+import 'package:message_app/logic/helper_functions.dart';
 
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  Future logOut() async {
+    await firebaseAuth.signOut();
+    HeplerFunctions.saveUserInfoToSf(false, "", "");
+  }
 
-  Future loginWithUserNameAndPassword(String email, String password) async {
-    try {
-      User user = (await firebaseAuth.signInWithEmailAndPassword(
-              email: email, password: password))
-          .user!;
-      log(user. toString());
+  Future<String> loginWithUserNameAndPassword(
+      String email, String password) async {
+    User? user = (await firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: password))
+        .user;
 
-      if (user != null) {
-        return true; 
-      }
-    } catch (e) {
-      log(e.toString());
+    if (user != null) {
+      final QuerySnapshot snapshot =
+          await DataBaseService(uid: user.uid).getUserInfo(user.email!);
+      HeplerFunctions.saveUserInfoToSf(
+          true, snapshot.docs.first['email'], snapshot.docs.first['fullName']);
+      return user.uid;
     }
+    throw Exception("Login Exception user==null");
   }
 
   Future registerUserWithEmailAndPassword(
-      String fullName, String email, String password) async {
-    try {
-      User user = (await firebaseAuth.createUserWithEmailAndPassword(
-              email: email, password: password))
-          .user!;
+      UserRegisterModel userRegisterModel) async {
+    User? user = (await firebaseAuth.createUserWithEmailAndPassword(
+            email: userRegisterModel.email,
+            password: userRegisterModel.password))
+        .user;
 
-      if (user != null) {
-        DataBaseService(uid: user.uid).updateUserData(fullName, email);
-      }
-    } catch (e) {
-      log(e.toString());
+    if (user != null) {
+      final DataBaseService dataBaseService = DataBaseService(uid: user.uid);
+      dataBaseService.saveUserData(userRegisterModel);
+      final QuerySnapshot snapshot =
+          await dataBaseService.getUserInfo(user.email!);
+      HeplerFunctions.saveUserInfoToSf(
+          true, snapshot.docs.first['email'], snapshot.docs.first['fullName']);
     }
   }
 }

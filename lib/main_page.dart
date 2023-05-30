@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:message_app/features/auth/presentattion/pages/sifn_in_page.dart';
+import 'package:message_app/features/home/presentation/pages/home_page.dart';
 
-import 'logic/helper_dunctions.dart';
+import 'logic/helper_functions.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -27,12 +29,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Builder(builder: (context) {
-          return Text('My Home Page');
-        }),
-      ),
-    );
+    if (_isSignedIn) {
+      return const HomePage();
+    } else {
+      return const SignInPage();
+    }
   }
 }

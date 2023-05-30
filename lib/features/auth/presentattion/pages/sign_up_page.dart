@@ -2,33 +2,33 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:message_app/config/routes/routes.dart';
 import 'package:message_app/features/auth/data/models/user_register_model.dart';
 
 import '../../../../config/constants/app_colors.dart';
 import '../../../../config/constants/app_text_styles.dart';
 import '../../../../config/constants/assets.dart';
+import '../../../../config/routes/routes.dart';
 import '../bloc/auth_bloc.dart';
 import '../widgets/custom_textfield.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController fullName = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthLoadingState) {
-            // showProgress(context);
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -41,7 +41,12 @@ class _SignInPageState extends State<SignInPage> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Column(
               children: [
-                SizedBox(height: 300.h),
+                SizedBox(height: 200.h),
+                CustomTextField(
+                  hintText: 'Full Name',
+                  controller: fullName,
+                  isPassword: false,
+                ),
                 CustomTextField(
                   hintText: 'Email',
                   controller: email,
@@ -62,11 +67,11 @@ class _SignInPageState extends State<SignInPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           context.read<AuthBloc>().add(
-                                LoginUserEvent(
+                                RegisterUserEvent(
                                     userRegisterModel: UserRegisterModel(
                                         email: email.text,
-                                        password: password.text,
-                                        fullName: ''),
+                                        fullName: fullName.text,
+                                        password: password.text),
                                     context: context),
                               );
                         },
@@ -128,11 +133,11 @@ class _SignInPageState extends State<SignInPage> {
                   padding: EdgeInsets.only(top: 11.h, bottom: 38.h),
                   child: Text.rich(
                     TextSpan(
-                      text: 'Sign up',
+                      text: 'Sign in',
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           Navigator.pushReplacementNamed(
-                              context, Routes.signUpPage);
+                              context, Routes.signInPage);
                         },
                       style: AppTextStyles.body18w7.copyWith(
                         color: AppColors.blue,

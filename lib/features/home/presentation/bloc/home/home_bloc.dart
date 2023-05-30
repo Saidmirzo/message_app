@@ -1,0 +1,91 @@
+import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:message_app/features/home/data/models/group_model.dart';
+import 'package:message_app/logic/database_service.dart';
+
+part 'home_event.dart';
+part 'home_state.dart';
+
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  Stream<dynamic>? groups;
+  Stream<dynamic>? chats;
+  List<GroupModel> listSearchGroupResult = [];
+  HomeBloc() : super(HomeInitial()) {
+    on<HomeEvent>((event, emit) {});
+    on<GetGroupListEvent>(
+      (event, emit) async {
+        emit(HomeLoadingState());
+        try {
+          groups = DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+              .getUserGroups();
+
+          emit(HomeLoadedState());
+        } catch (e) {
+          emit(HomeErrorState(message: e.toString()));
+        }
+      },
+    );
+    on<CreateGroupEvent>(
+      (event, emit) async {
+        emit(HomeLoadingState());
+        try {
+          await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+              .createGroup(event.userName, event.groupName);
+
+          add(GetGroupListEvent());
+        } catch (e) {
+          emit(HomeErrorState(message: e.toString()));
+        }
+      },
+    );
+    on<GetChatsEvent>(
+      (event, emit) async {
+        emit(HomeLoadingState());
+        chats = DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+            .getChats(event.groupId);
+        emit(HomeLoadedState());
+      },
+    );
+
+    on<SendMessageEvent>(
+      (event, emit) {
+        if (event.message.isNotEmpty) {
+          Map<String, dynamic> chatMessageMap = {
+            "message": event.message,
+            "sender": event.userName,
+            "time": DateTime.now().millisecondsSinceEpoch,
+          };
+
+          DataBaseService().sendMessage(event.groupId, chatMessageMap);
+        }
+      },
+    );
+    on<SearchGroupByName>(
+      (event, emit) async {
+        emit(HomeLoadingState());
+        final searchGroupSnapshoot =
+            await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+                .searchGroupByName(event.name);
+        for (var element in searchGroupSnapshoot.docs) {
+          listSearchGroupResult.add(
+            GroupModel(
+              admin: element["admin"],
+              groupId: element["groupId"],
+              groupName: element["groupName"],
+            ),
+          );
+        }
+
+        emit(HomeLoadedState());
+      },
+    );
+    on<ToggleGroupEvent>(
+      (event, emit) async {
+        DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+            .toggleGroup(event.groupModel);
+      },
+    );
+  }
+}

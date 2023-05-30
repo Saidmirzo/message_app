@@ -1,12 +1,27 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:message_app/features/auth/presentattion/bloc/auth_bloc.dart';
+import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
 
+import 'config/constants/constants.dart';
 import 'config/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: Constants.apiKey,
+          appId: Constants.appId,
+          messagingSenderId: Constants.messagingSenderId,
+          projectId: Constants.projectId),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 
@@ -20,12 +35,19 @@ class MyApp extends StatelessWidget {
       designSize: const Size(393, 852),
       splitScreenMode: true,
       minTextAdapt: true,
-      builder: (context, child) => MaterialApp(
-        title: 'Message App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      builder: (context, child) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => AuthBloc()),
+          BlocProvider(create: (context) => HomeBloc()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Message App',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          onGenerateRoute: (settings) => Routes.generateRoute(settings),
         ),
-        onGenerateRoute: (settings) => Routes.generateRoute(settings),
       ),
     );
   }
