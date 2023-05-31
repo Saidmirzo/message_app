@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     context.read<HomeBloc>().add(GetGroupListEvent());
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             return GroupTile(
                               title: listGroups[index],
-                              admin: "Saidmirzo",
+                              admin: context.read<HomeBloc>().userName??"Default",
                             );
                           },
                         );

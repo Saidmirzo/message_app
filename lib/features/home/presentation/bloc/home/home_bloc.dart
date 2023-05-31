@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
 import 'package:message_app/logic/database_service.dart';
+import 'package:message_app/logic/helper_functions.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -11,12 +13,14 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<dynamic>? groups;
   Stream<dynamic>? chats;
+  String? userName;
   List<GroupModel> listSearchGroupResult = [];
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
     on<GetGroupListEvent>(
       (event, emit) async {
         emit(HomeLoadingState());
+        userName = await HeplerFunctions.getUserName();
         try {
           groups = DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
               .getUserGroups();
@@ -51,14 +55,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<SendMessageEvent>(
       (event, emit) {
-        if (event.message.isNotEmpty) {
-          Map<String, dynamic> chatMessageMap = {
-            "message": event.message,
-            "sender": event.userName,
-            "time": DateTime.now().millisecondsSinceEpoch,
-          };
+        try {
+          if (event.message.isNotEmpty) {
+            Map<String, dynamic> chatMessageMap = {
+              "message": event.message,
+              "sender": event.userName,
+              "time": DateTime.now().millisecondsSinceEpoch,
+            };
 
-          DataBaseService().sendMessage(event.groupId, chatMessageMap);
+            DataBaseService().sendMessage(event.groupId, chatMessageMap);
+          }
+        } catch (e) {
+          log(e.toString());
         }
       },
     );

@@ -45,7 +45,10 @@ class _ChatPageState extends State<ChatPage> {
                     builder: (context, AsyncSnapshot snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
+                              reverse: true,
+                              // dragStartBehavior: DragStartBehavior.down,
                               itemCount: snapshot.data.docs.length,
+                              padding: EdgeInsets.symmetric(vertical: 100.h),
                               itemBuilder: (context, index) {
                                 return MessageTile(
                                     message: snapshot.data.docs[index]
@@ -78,10 +81,13 @@ class _ChatPageState extends State<ChatPage> {
                           )),
                           IconButton(
                             onPressed: () {
-                              context.read<HomeBloc>().add(SendMessageEvent(
-                                  groupId: widget.groupId,
-                                  userName: widget.userName,
-                                  message: textEditingController.text));
+                              context.read<HomeBloc>().add(
+                                    SendMessageEvent(
+                                        groupId: widget.groupId,
+                                        userName: widget.userName,
+                                        message: textEditingController.text),
+                                  );
+                              textEditingController.clear();
                             },
                             icon: const Icon(Icons.send),
                           ),

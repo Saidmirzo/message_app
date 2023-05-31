@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:message_app/config/routes/routes.dart';
+import 'package:message_app/logic/helper_functions.dart';
 
 import '../../../../config/constants/app_text_styles.dart';
 
@@ -23,7 +24,7 @@ class GroupTile extends StatelessWidget {
         Navigator.pushNamed(context, Routes.chatPage, arguments: {
           "title": title,
           "userName": admin,
-          "groupId":groupId,
+          "groupId": groupId,
         });
       },
       leading: CircleAvatar(
@@ -42,6 +43,6 @@ class GroupTile extends StatelessWidget {
   }
 
   String getGroupId(String value) {
-    return value.substring(value.indexOf('_') + 1);
+    return value.substring(0, value.indexOf('_') );
   }
 }

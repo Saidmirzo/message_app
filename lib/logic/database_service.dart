@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:message_app/features/auth/data/models/user_register_model.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
@@ -41,6 +43,8 @@ class DataBaseService {
       "groupId": "",
       "recentMessage": "",
       "recentMessageSenderName": "",
+      "recentMessageTime": "",
+
     });
     await groupDocumentReference.update({
       "members": FieldValue.arrayUnion(["${uid}_$username"]),
@@ -62,21 +66,28 @@ class DataBaseService {
   }
 
   sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
-    groupCollection.doc(groupId).collection("messages").add(chatMessageData);
-    groupCollection.doc(groupId).update({
-      "recentMessage": chatMessageData['message'],
-      "recentMessageSender": chatMessageData['sender'],
+    await groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .add(chatMessageData);
+
+    await groupCollection.doc(groupId).update({
+      "recentMessage":  chatMessageData['message'],
+      "recentMessageSenderName": chatMessageData['sender'],
       "recentMessageTime": chatMessageData['time'].toString(),
     });
+    final result = await groupCollection.doc(groupId).get();
+    log(result["recentMessage"]);
   }
 
   Future<QuerySnapshot> searchGroupByName(String name) {
-    return groupCollection.where("groupName", arrayContains: name).get();
+    return groupCollection.where("groupName", isEqualTo: name).get();
   }
 
   Future toggleGroup(GroupModel groupModel) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
-    DocumentReference groupDocumentReference = groupCollection.doc(uid);
+    DocumentReference groupDocumentReference =
+        groupCollection.doc(groupModel.groupId);
 
     final String userName = await HeplerFunctions.getUserName();
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
