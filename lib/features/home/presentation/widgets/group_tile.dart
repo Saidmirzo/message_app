@@ -1,40 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:message_app/config/routes/routes.dart';
-import 'package:message_app/logic/helper_functions.dart';
+import 'package:message_app/features/home/data/models/group_model.dart';
 
 import '../../../../config/constants/app_text_styles.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({
     super.key,
-    required this.title,
-    required this.admin,
+    required this.groupModel,
   });
 
-  final String title;
-  final String admin;
+  final GroupModel groupModel;
 
   @override
   Widget build(BuildContext context) {
-    final String groupName = getTitle(title);
-    final String groupId = getGroupId(title);
+    // final String groupName = getTitle(title);
+    // final String groupId = getGroupId(title);
 
     return ListTile(
       onTap: () {
         Navigator.pushNamed(context, Routes.chatPage, arguments: {
-          "title": title,
-          "userName": admin,
-          "groupId": groupId,
+          "title": groupModel.groupName,
+          "userName": groupModel.admin,
+          "groupId": groupModel.groupId,
         });
       },
       leading: CircleAvatar(
         child: Text(
-          groupName.substring(0, 1),
+          groupModel.groupName.substring(0, 1),
           style: AppTextStyles.body32w5,
         ),
       ),
-      title: Text(groupName),
-      subtitle: Text("Admin: $admin"),
+      title: Text(groupModel.groupName),
+      subtitle: Text(
+          "Admin: ${groupModel.admin.substring(groupModel.admin.indexOf("_") + 1)}"),
     );
   }
 
@@ -43,6 +42,6 @@ class GroupTile extends StatelessWidget {
   }
 
   String getGroupId(String value) {
-    return value.substring(0, value.indexOf('_') );
+    return value.substring(0, value.indexOf('_'));
   }
 }

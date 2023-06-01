@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_app/config/constants/app_text_styles.dart';
 import 'package:message_app/config/routes/routes.dart';
+import 'package:message_app/features/home/data/models/group_model.dart';
 import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:message_app/logic/helper_functions.dart';
 
@@ -21,7 +24,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     context.read<HomeBloc>().add(GetGroupListEvent());
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,16 +62,19 @@ class _HomePageState extends State<HomePage> {
               child: StreamBuilder(
                 stream: context.read<HomeBloc>().groups,
                 builder: (context, snapshot) {
+                  // snapshot.
+                  log(snapshot.hasData.toString());
+                  log(snapshot.data.toString());
+
                   if (snapshot.hasData) {
-                    List? listGroups = snapshot.data['groups'];
+                    List<GroupModel>? listGroups = snapshot.data;
                     if (listGroups != null) {
                       if (listGroups.isNotEmpty) {
                         return ListView.builder(
                           itemCount: listGroups.length,
                           itemBuilder: (context, index) {
                             return GroupTile(
-                              title: listGroups[index],
-                              admin: context.read<HomeBloc>().userName??"Default",
+                              groupModel: listGroups[index],
                             );
                           },
                         );

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:message_app/features/auth/data/models/user_register_model.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
+import 'package:message_app/features/home/data/models/search_group_model.dart';
 import 'package:message_app/logic/helper_functions.dart';
 
 class DataBaseService {
@@ -30,8 +31,35 @@ class DataBaseService {
     return snapshot;
   }
 
-  Stream getUserGroups() {
-    return userCollection.doc(uid).snapshots();
+  Stream<List<GroupModel>> getUserGroups() async* {
+    List listGroups;
+    Stream userSnapshot = userCollection.doc(uid).snapshots();
+
+    await for (var event in userSnapshot) {
+      log("sss");
+      List<GroupModel> list = [];
+
+      listGroups = event["groups"];
+      await Future.forEach(listGroups, (element) async {
+        list.add(
+            await getGroupInfo(element.substring(0, element.indexOf("_"))));
+      });
+
+      yield list;
+    }
+  }
+
+  Future<GroupModel> getGroupInfo(String groupId) async {
+    final group = await groupCollection.doc(groupId).get();
+    return GroupModel(
+        admin: group["admin"],
+        groupIcon: group["groupIcon"],
+        groupId: group["groupId"],
+        groupName: group["groupName"],
+        members: group["members"],
+        recentMessage: group["recentMessage"],
+        recentMessageSenderName: group["recentMessageSenderName"],
+        recentMessageTime: "");
   }
 
   Future createGroup(String username, String groupName) async {
@@ -44,7 +72,6 @@ class DataBaseService {
       "recentMessage": "",
       "recentMessageSenderName": "",
       "recentMessageTime": "",
-
     });
     await groupDocumentReference.update({
       "members": FieldValue.arrayUnion(["${uid}_$username"]),
@@ -72,27 +99,26 @@ class DataBaseService {
         .add(chatMessageData);
 
     await groupCollection.doc(groupId).update({
-      "recentMessage":  chatMessageData['message'],
+      "recentMessage": chatMessageData['message'],
       "recentMessageSenderName": chatMessageData['sender'],
       "recentMessageTime": chatMessageData['time'].toString(),
     });
-    final result = await groupCollection.doc(groupId).get();
-    log(result["recentMessage"]);
   }
 
   Future<QuerySnapshot> searchGroupByName(String name) {
     return groupCollection.where("groupName", isEqualTo: name).get();
   }
 
-  Future toggleGroup(GroupModel groupModel) async {
+  Future toggleGroup(SearchGroupModel SearchGroupModel) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference =
-        groupCollection.doc(groupModel.groupId);
+        groupCollection.doc(SearchGroupModel.groupId);
 
     final String userName = await HeplerFunctions.getUserName();
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
     List groups = documentSnapshot["groups"];
-    final String groupItem = "${groupModel.groupId}_${groupModel.groupName}";
+    final String groupItem =
+        "${SearchGroupModel.groupId}_${SearchGroupModel.groupName}";
     final String userItem = "${uid}_$userName";
 
     if (groups.contains(groupItem)) {

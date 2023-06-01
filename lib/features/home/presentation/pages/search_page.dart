@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:message_app/features/home/data/models/group_model.dart';
+import 'package:message_app/features/home/data/models/search_group_model.dart';
 import 'package:message_app/features/home/presentation/widgets/group_tile.dart';
 
 import '../bloc/home/home_bloc.dart';
@@ -48,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
-              List<GroupModel> listSearchResults =
+              List<SearchGroupModel> listSearchResults =
                   context.read<HomeBloc>().listSearchGroupResult;
               if (state is HomeLoadedState) {
                 return Expanded(
@@ -58,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
                       return ListTile(
                         onTap: () {
                           context.read<HomeBloc>().add(ToggleGroupEvent(
-                              groupModel: listSearchResults[index]));
+                              searchGroupModel: listSearchResults[index]));
                         },
                         title: Text(listSearchResults[index].groupName),
                         subtitle: Text(listSearchResults[index].admin),

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
+import 'package:message_app/features/home/data/models/search_group_model.dart';
 import 'package:message_app/logic/database_service.dart';
 import 'package:message_app/logic/helper_functions.dart';
 
@@ -11,10 +12,10 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  Stream<dynamic>? groups;
+  Stream<List<GroupModel>>? groups;
   Stream<dynamic>? chats;
   String? userName;
-  List<GroupModel> listSearchGroupResult = [];
+  List<SearchGroupModel> listSearchGroupResult = [];
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
     on<GetGroupListEvent>(
@@ -22,7 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomeLoadingState());
         userName = await HeplerFunctions.getUserName();
         try {
-          groups = DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+          groups =  DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
               .getUserGroups();
 
           emit(HomeLoadedState());
@@ -78,7 +79,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 .searchGroupByName(event.name);
         for (var element in searchGroupSnapshoot.docs) {
           listSearchGroupResult.add(
-            GroupModel(
+            SearchGroupModel(
               admin: element["admin"],
               groupId: element["groupId"],
               groupName: element["groupName"],
@@ -92,7 +93,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<ToggleGroupEvent>(
       (event, emit) async {
         DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-            .toggleGroup(event.groupModel);
+            .toggleGroup(event.searchGroupModel);
       },
     );
   }

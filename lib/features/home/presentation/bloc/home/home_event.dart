@@ -34,6 +34,6 @@ class SearchGroupByName extends HomeEvent {
 }
 
 class ToggleGroupEvent extends HomeEvent {
-  final GroupModel groupModel;
-  const ToggleGroupEvent({required this.groupModel});
+  final SearchGroupModel searchGroupModel;
+  const ToggleGroupEvent({required this.searchGroupModel});
 }
