@@ -44,10 +44,7 @@ class Routes {
         case chatPage:
           return MaterialPageRoute(
             settings: routeSettings,
-            builder: (_) => ChatPage(
-                title: args!["title"],
-                groupId: args["groupId"],
-                userName: args["userName"]),
+            builder: (_) => ChatPage(groupModel: args!["groupModel"]),
           );
         case searchPage:
           return MaterialPageRoute(

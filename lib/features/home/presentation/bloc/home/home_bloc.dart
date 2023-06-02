@@ -23,7 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomeLoadingState());
         userName = await HeplerFunctions.getUserName();
         try {
-          groups =  DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+          groups =await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
               .getUserGroups();
 
           emit(HomeLoadedState());
@@ -40,6 +40,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               .createGroup(event.userName, event.groupName);
 
           add(GetGroupListEvent());
+          emit(HomeLoadedState());
         } catch (e) {
           emit(HomeErrorState(message: e.toString()));
         }

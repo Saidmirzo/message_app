@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:message_app/config/constants/app_colors.dart';
 import 'package:message_app/features/auth/presentattion/bloc/auth_bloc.dart';
 import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
 
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Message App',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primaryColor: AppColors.primary400,
+            // primarySwatch: MaterialColor(400, AppColors.primaryLight),
           ),
           onGenerateRoute: (settings) => Routes.generateRoute(settings),
         ),
