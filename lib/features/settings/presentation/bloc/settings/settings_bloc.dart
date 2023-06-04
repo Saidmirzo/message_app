@@ -15,25 +15,31 @@ part 'settings_state.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   late UserModel userModel;
   String userImage = '';
-  SettingsBloc() : super(SettingsInitial()) {
+
+  final DataBaseService dataBaseService;
+  final ImagePicker imagePicker;
+  final StorageService storageService;
+
+  SettingsBloc({
+    required this.imagePicker,
+    required this.storageService,
+    required this.dataBaseService,
+  }) : super(SettingsInitial()) {
     on<SettingsEvent>((event, emit) {});
     on<GetUserInfoEvent>(
       (event, emit) async {
         emit(SettingsLoadingState());
         try {
-          userModel =
-              await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-                  .getUserInfoWithUserId();
+          userModel = await dataBaseService.getUserInfoWithUserId();
           emit(SettingsLoadedState());
         } catch (e) {
           emit(SettingsErrorState(message: e.toString()));
         }
       },
     );
-    on<UploadimageEvent>(
+    on<UpdateImageEvent>(
       (event, emit) async {
         emit(SettingsLoadingState());
-        final imagePicker = ImagePicker();
         final XFile? xFile =
             await imagePicker.pickImage(source: ImageSource.gallery);
         userImage = xFile!.path;
@@ -45,13 +51,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         emit(SettingsLoadingState());
         try {
           if (userImage.isNotEmpty) {
-            final String imageUrl = await StorageService().uploadFile(
+            final String imageUrl = await storageService.uploadFile(
                 image: File(userImage), userId: event.userModel.uid!);
             userModel = event.userModel.copyWith(userImage: imageUrl);
-          }else {
+          } else {
             userModel = event.userModel;
           }
-          await DataBaseService().updateUserinfo(userModel);
+          await dataBaseService.updateUserinfo(userModel);
           emit(SettingsLoadedState());
         } catch (e) {
           emit(SettingsErrorState(message: e.toString()));

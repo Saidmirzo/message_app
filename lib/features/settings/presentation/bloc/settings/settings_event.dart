@@ -9,7 +9,7 @@ abstract class SettingsEvent extends Equatable {
 
 class GetUserInfoEvent extends SettingsEvent {}
 
-class UploadimageEvent extends SettingsEvent {}
+class UpdateImageEvent extends SettingsEvent {}
 
 class SaveChanges extends SettingsEvent {
   final UserModel userModel;

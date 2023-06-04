@@ -15,18 +15,7 @@ class CreateGroupEvent extends HomeEvent {
   const CreateGroupEvent({required this.groupName, required this.userName});
 }
 
-class GetChatsEvent extends HomeEvent {
-  final String groupId;
-  const GetChatsEvent({required this.groupId});
-}
 
-class SendMessageEvent extends HomeEvent {
-  final String message;
-  final String groupId;
-  final String userName;
-  const SendMessageEvent(
-      {required this.groupId, required this.userName, required this.message});
-}
 
 class SearchGroupByName extends HomeEvent {
   final String name;

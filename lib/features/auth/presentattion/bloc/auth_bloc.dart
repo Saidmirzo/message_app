@@ -13,9 +13,10 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService authService = AuthService();
+  final AuthService authService;
+  final ImagePicker imagePicker;
   String userImage = '';
-  AuthBloc() : super(AuthInitial()) {
+  AuthBloc({required  this.imagePicker, required this.authService}) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) {});
     on<RegisterUserEvent>(
       (event, emit) async {
@@ -34,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(AuthLoadingState());
         try {
-          final String result = await authService.loginWithUserNameAndPassword(
+          await authService.loginWithUserNameAndPassword(
             event.userRegisterModel.email,
             event.userRegisterModel.password,
           );
@@ -66,7 +67,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(ImageUploadingState());
         try {
-          final imagePicker = ImagePicker();
           final XFile? xFile =
               await imagePicker.pickImage(source: ImageSource.gallery);
           userImage = xFile!.path;

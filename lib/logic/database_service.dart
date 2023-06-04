@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:message_app/features/auth/data/models/user_model.dart';
 import 'package:message_app/features/auth/data/models/user_register_model.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
+import 'package:message_app/features/home/data/models/message_model.dart';
 import 'package:message_app/features/home/data/models/search_group_model.dart';
 import 'package:message_app/logic/helper_functions.dart';
 
@@ -122,6 +123,18 @@ class DataBaseService {
       "recentMessageTime": chatMessageData['time'].toString(),
     });
   }
+  // void sendMessage(String groupId, MessageModel messageModel) async {
+  //   await groupCollection
+  //       .doc(groupId)
+  //       .collection("messages")
+  //       .add(messageModel.toJson());
+
+  //   await groupCollection.doc(groupId).update({
+  //     "recentMessage": messageModel.message,
+  //     "recentMessageSenderName": messageModel.senderName,
+  //     "recentMessageTime": messageModel.time,
+  //   });
+  // }
 
   Future<QuerySnapshot> searchGroupByName(String name) {
     return groupCollection.where("groupName", isEqualTo: name).get();

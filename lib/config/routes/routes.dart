@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:message_app/features/auth/presentattion/pages/sifn_in_page.dart';
 import 'package:message_app/features/auth/presentattion/pages/upload_photo_page.dart';
-import 'package:message_app/features/home/presentation/pages/chat_page.dart';
+import 'package:message_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:message_app/features/home/presentation/pages/home_page.dart';
 import 'package:message_app/features/home/presentation/pages/search_page.dart';
 import 'package:message_app/features/settings/presentation/pages/edit_profile_page.dart';

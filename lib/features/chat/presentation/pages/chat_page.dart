@@ -7,8 +7,9 @@ import 'package:message_app/config/constants/app_text_styles.dart';
 import 'package:message_app/config/constants/assets.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
 
-import '../bloc/home/home_bloc.dart';
-import '../widgets/custom_button.dart';
+import '../../../home/presentation/bloc/home/home_bloc.dart';
+import '../../../home/presentation/widgets/custom_button.dart';
+import '../bloc/chat/chat_bloc.dart';
 import '../widgets/message_tile.dart';
 
 class ChatPage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
 
-    context.read<HomeBloc>().add(GetChatsEvent(groupId: groupModel.groupId));
+    context.read<ChatBloc>().add(GetChatsEvent(groupId: groupModel.groupId));
   }
 
   @override
@@ -44,9 +45,9 @@ class _ChatPageState extends State<ChatPage> {
         title: const Text("Chat"),
         centerTitle: true,
       ),
-      body: BlocBuilder<HomeBloc, HomeState>(
+      body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
-          if (state is HomeLoadedState) {
+          if (state is ChatLoadedState) {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               decoration: BoxDecoration(
@@ -57,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
               child: Stack(
                 children: [
                   StreamBuilder(
-                    stream: context.read<HomeBloc>().chats,
+                    stream: context.read<ChatBloc>().chats,
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         List messageList = snapshot.data.docs;
@@ -121,7 +122,7 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                           CustomButton(
                             onTap: () {
-                              context.read<HomeBloc>().add(
+                              context.read<ChatBloc>().add(
                                     SendMessageEvent(
                                         groupId: groupModel.groupId,
                                         userName: userName,

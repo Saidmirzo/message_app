@@ -5,11 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:message_app/config/constants/app_colors.dart';
 import 'package:message_app/features/auth/presentattion/bloc/auth_bloc.dart';
+import 'package:message_app/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:message_app/features/settings/presentation/bloc/settings/settings_bloc.dart';
 
 import 'config/constants/constants.dart';
 import 'config/routes/routes.dart';
+import 'injection_container.dart' as di;
+import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +27,7 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -39,9 +43,10 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) => MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => AuthBloc()),
-          BlocProvider(create: (context) => HomeBloc()),
-          BlocProvider(create: (context) => SettingsBloc()),
+          BlocProvider(create: (context) => sl<AuthBloc>()),
+          BlocProvider(create: (context) => sl<HomeBloc>()),
+          BlocProvider(create: (context) => sl<SettingsBloc>()),
+          BlocProvider(create: (context) => sl<ChatBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

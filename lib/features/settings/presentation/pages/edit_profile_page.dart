@@ -139,7 +139,7 @@ class EditProfilePage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        context.read<SettingsBloc>().add(UploadimageEvent());
+                        context.read<SettingsBloc>().add(UpdateImageEvent());
                       },
                       child: Container(
                         height: 40.h,
