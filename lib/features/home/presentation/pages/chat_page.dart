@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:message_app/config/constants/app_colors.dart';
-import 'package:message_app/config/constants/app_decorations.dart';
 import 'package:message_app/config/constants/app_text_styles.dart';
 import 'package:message_app/config/constants/assets.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
@@ -40,6 +39,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       backgroundColor: AppColors.neutral900,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: AppColors.appBarColor,
         title: const Text("Chat"),
         centerTitle: true,
@@ -48,6 +48,7 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, state) {
           if (state is HomeLoadedState) {
             return Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(Assets.images.chatBg),
@@ -62,8 +63,8 @@ class _ChatPageState extends State<ChatPage> {
                         List messageList = snapshot.data.docs;
                         messageList = messageList.reversed.toList();
                         return ListView.builder(
+                          physics: const BouncingScrollPhysics(),
                           reverse: true,
-                          // dragStartBehavior: DragStartBehavior.down,
                           itemCount: messageList.length,
                           padding: EdgeInsets.symmetric(vertical: 100.h),
                           itemBuilder: (context, index) {
@@ -85,8 +86,8 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   Positioned(
                     bottom: 30.h,
-                    left: 24.w,
-                    right: 24.w,
+                    left: 0.w,
+                    right: 0.w,
                     child: Container(
                       height: 56.h,
                       alignment: Alignment.center,

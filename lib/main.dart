@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:message_app/config/constants/app_colors.dart';
 import 'package:message_app/features/auth/presentattion/bloc/auth_bloc.dart';
 import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
+import 'package:message_app/features/settings/presentation/bloc/settings/settings_bloc.dart';
 
 import 'config/constants/constants.dart';
 import 'config/routes/routes.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => AuthBloc()),
           BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(create: (context) => SettingsBloc()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

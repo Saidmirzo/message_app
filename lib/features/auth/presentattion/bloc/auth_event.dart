@@ -26,3 +26,7 @@ class LogOutEvent extends AuthEvent {
   final BuildContext context;
   const LogOutEvent({required this.context});
 }
+
+
+class UploadImageEvent extends AuthEvent{
+}

@@ -25,6 +25,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.neutral900,
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthLoadingState) {
@@ -64,9 +65,11 @@ class _SignInPageState extends State<SignInPage> {
                           context.read<AuthBloc>().add(
                                 LoginUserEvent(
                                     userRegisterModel: UserRegisterModel(
-                                        email: email.text,
-                                        password: password.text,
-                                        fullName: ''),
+                                      email: email.text,
+                                      password: password.text,
+                                      fullName: '',
+                                      userImage: '',
+                                    ),
                                     context: context),
                               );
                         },

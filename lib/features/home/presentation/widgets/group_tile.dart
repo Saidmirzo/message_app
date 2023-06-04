@@ -7,6 +7,7 @@ import 'package:message_app/features/home/data/models/group_model.dart';
 
 import '../../../../config/constants/app_text_styles.dart';
 import '../../../../config/routes/routes.dart';
+import '../../../../widgets/custom_avatar.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({
@@ -18,8 +19,7 @@ class GroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final String groupName = getTitle(title);
-    // final String groupId = getGroupId(title);
+    
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, Routes.chatPage, arguments: {
@@ -31,15 +31,7 @@ class GroupTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: SizedBox(
-                height: 56.h,
-                width: 56.h,
-                child: Image.asset(Assets.images.user1,
-                    fit: BoxFit.cover, alignment: Alignment.center),
-              ),
-            ),
+            CustomAvatar(image: Assets.images.user1,size:56.h ),
             SizedBox(width: 16.w),
             Expanded(
               child: Column(
@@ -66,7 +58,9 @@ class GroupTile extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    groupModel.recentMessage.isEmpty?"": "${groupModel.recentMessageSenderName}: ${groupModel.recentMessage}",
+                    groupModel.recentMessage.isEmpty
+                        ? ""
+                        : "${groupModel.recentMessageSenderName}: ${groupModel.recentMessage}",
                     style: AppTextStyles.body16w4.copyWith(
                       color: AppColors.neutral200,
                     ),
@@ -78,25 +72,7 @@ class GroupTile extends StatelessWidget {
         ),
       ),
     );
-    // return ListTile(
-    //   onTap: () {
-    //     Navigator.pushNamed(context, Routes.chatPage, arguments: {
-    //       "groupModel": groupModel,
-    //     });
-    //   },
-    //   leading: ClipRRect(
-    //     borderRadius: BorderRadius.circular(100),
-    //     child: SizedBox(
-    //       height: 56.h,
-    //       width: 56.h,
-    //       child: Image.asset(Assets.images.user1,
-    //           fit: BoxFit.cover, alignment: Alignment.center),
-    //     ),
-    //   ),
-    //   title: Text(groupModel.groupName),
-    //   subtitle: Text(
-    //       "Admin: ${groupModel.admin.substring(groupModel.admin.indexOf("_") + 1)}"),
-    // );
+    
   }
 
   String getTitle(String value) {
@@ -118,3 +94,5 @@ class GroupTile extends StatelessWidget {
     return "${date.hour}:${date.minute}";
   }
 }
+
+

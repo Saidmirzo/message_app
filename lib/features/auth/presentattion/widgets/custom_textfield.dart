@@ -19,7 +19,8 @@ class CustomTextField extends StatefulWidget {
     this.focusNode,
     this.title,
     this.isValidate = false,
-    this.readOnly = false, this.margin,
+    this.readOnly = false,
+    this.margin,
   });
 
   final String? hintText;
@@ -51,11 +52,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         children: [
           widget.title != null
               ? Padding(
-                  padding: EdgeInsets.only(left: 20.w, top: 24.h, bottom: 9.h),
+                  padding: EdgeInsets.only(top: 24.h, bottom: 9.h),
                   child: Text(
                     widget.title ?? '',
-                    style: AppTextStyles.body14w4
-                        .copyWith(color: AppColors.unActText),
+                    style:
+                        AppTextStyles.body14w5.copyWith(color: AppColors.white),
                   ),
                 )
               : const SizedBox.shrink(),
@@ -69,8 +70,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       ? null
                       : 'Please enter a valid email'
                   : null,
-              style:
-                  AppTextStyles.body18w4.copyWith(color: AppColors.textfield),
+              style: AppTextStyles.body18w4.copyWith(color: AppColors.white),
               controller: widget.controller,
               focusNode: widget.focusNode,
               cursorColor: AppColors.unActText,
@@ -89,20 +89,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       )
                     : null,
                 prefixIconConstraints:
-                    BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
+                    BoxConstraints(maxHeight: 65.h, maxWidth: 65.w),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  padding: EdgeInsets.only(left: 20.w, right: 15.w),
                   child: widget.prefixIcon,
                 ),
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.r),
-                  borderSide:
-                      const BorderSide(width: 0, style: BorderStyle.none),
+                  borderSide: BorderSide(color: Colors.red),
                 ),
                 filled: true,
-                fillColor: AppColors.bgTextfield,
+                fillColor: AppColors.neutral800,
                 hintStyle:
                     AppTextStyles.body18w4.copyWith(color: AppColors.unActText),
                 hintText: widget.hintText ?? "text",

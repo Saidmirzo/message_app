@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:message_app/features/auth/data/models/user_model.dart';
 import 'package:message_app/features/auth/data/models/user_register_model.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
 import 'package:message_app/features/home/data/models/search_group_model.dart';
@@ -21,8 +22,9 @@ class DataBaseService {
     return await userCollection.doc(uid).set({
       "fullName": userRegisterModel.fullName,
       "email": userRegisterModel.email,
-      "groups": [],
       "uid": uid,
+      "userImage": userRegisterModel.userImage,
+      "groups": [],
     });
   }
 
@@ -32,58 +34,32 @@ class DataBaseService {
     return snapshot;
   }
 
-  // Stream<List<GroupModel>> getUserGroups() async* {
-  //   List listGroups;
-  //   StreamController<List<GroupModel>> controller = StreamController();
+  Future updateUserinfo(UserModel userModel) async {
+    final DocumentReference docUser = userCollection.doc(userModel.uid);
+    await docUser.update(userModel.toJson());
+  }
 
-  //   StreamSubscription userSubscription =
-  //       userCollection.doc(uid).snapshots().listen((event) async {
-  //     List<GroupModel> list = [];
+  Future<UserModel> getUserInfoWithUserId() async {
+    QuerySnapshot snapshot =
+        await userCollection.where("uid", isEqualTo: uid).get();
+    return UserModel.fromJson(
+        jsonDecode(jsonEncode(snapshot.docs.first.data())));
+  }
 
-  //     listGroups = event["groups"];
-  //     await Future.forEach(listGroups, (element) async {
-  //       list.add(
-  //           await getGroupInfo(element.substring(0, element.indexOf("_"))));
-  //     });
-
-  //     controller.add(list);
-  //   });
-
-  //   // Return the stream from the controller's stream
-  //   yield* controller.stream;
-
-  //   // Cancel the subscription and close the controller when done
-  //   await userSubscription.cancel();
-  //   await controller.close();
-  // }
   Future<Stream<List<GroupModel>>> getUserGroups() async {
     final userDoc = await userCollection.doc(uid).get();
     final List listGroups = userDoc["groups"];
-    List<GroupModel> list = [];
-
-    await Future.forEach(listGroups, (element) async {
-      list.add(await getGroupInfo(element.substring(0, element.indexOf("_"))));
-    });
     final List onlyGroupId = listGroups
         .map((e) => e.toString().substring(0, e.toString().indexOf("_")))
         .toList();
-    final result =
-        await groupCollection.where("groupId", whereIn: onlyGroupId).get();
+    if (onlyGroupId.isEmpty) {
+      return const Stream.empty();
+    }
 
     return groupCollection
         .where("groupId", whereIn: onlyGroupId)
         .snapshots()
         .map((event) => buildGroupModel(event));
-    // .snapshots()
-    // .listen((event) {
-    //   log("salom: ${event.docs}");
-    // });
-    // log(result.docs.first["groupName"]);
-    // return list;
-
-    // Return the stream from the controller's stream
-
-    // Cancel the subscription and close the controller when done
   }
 
   List<GroupModel> buildGroupModel(QuerySnapshot querySnapshot) {
@@ -102,19 +78,6 @@ class DataBaseService {
     }
     // final group = await groupCollection.doc(groupId).get();
     return groupList;
-  }
-
-  Future<GroupModel> getGroupInfo(String groupId) async {
-    final group = await groupCollection.doc(groupId).get();
-    return GroupModel(
-        admin: group["admin"],
-        groupIcon: group["groupIcon"],
-        groupId: group["groupId"],
-        groupName: group["groupName"],
-        members: group["members"],
-        recentMessage: group["recentMessage"],
-        recentMessageSenderName: group["recentMessageSenderName"],
-        recentMessageTime: group["recentMessageTime"]);
   }
 
   Future createGroup(String username, String groupName) async {

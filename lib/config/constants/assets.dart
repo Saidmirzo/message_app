@@ -26,6 +26,14 @@ class _Icons extends _AssetsHolder {
 
   String get paperClip => "$basePath/paper_clip_icon.svg";
 
+  String get logout => "$basePath/logout.svg";
+
+  String get addPhoto => "$basePath/add_photo.svg";
+
+  String get user => "$basePath/user.svg";
+
+  String get check => "$basePath/check_ic.svg";
+
 }
 
 class _Images extends _AssetsHolder {
@@ -34,4 +42,10 @@ class _Images extends _AssetsHolder {
   String get user1 => '$basePath/user1.jpg';
 
   String get chatBg => '$basePath/chat_bg_img.png';
+
+  String get logo => '$basePath/logo.svg';
+
+  String get defUserimaage => '$basePath/def_user_img.png';
+
+  String get uploadingUserimage => '$basePath/uploading_user_img.png';
 }

@@ -1,24 +1,42 @@
 class UserModel {
-  String? fullName;
   String? email;
-  List<String>? groups;
+  String? userImage;
   String? uid;
+  List<String>? groups;
+  String? fullName;
 
-  UserModel({this.fullName, this.email, this.groups, this.uid});
+  UserModel({this.email, this.userImage, this.uid, this.groups, this.fullName});
+
+  UserModel copyWith({
+    String? fullName,
+    String? email,
+    String? userImage,
+  }) {
+    return UserModel(
+      email: email ?? this.email,
+      userImage: userImage ?? this.userImage,
+      uid: uid,
+      groups: groups,
+      fullName: fullName ?? this.fullName,
+
+    );
+  }
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    fullName = json['fullName'];
     email = json['email'];
-    groups = json['groups'].cast<String>();
+    userImage = json['userImage'];
     uid = json['uid'];
+    groups = json['groups'].cast<String>();
+    fullName = json['fullName'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['fullName'] = this.fullName;
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['email'] = this.email;
-    data['groups'] = this.groups;
+    data['userImage'] = this.userImage;
     data['uid'] = this.uid;
+    data['groups'] = this.groups;
+    data['fullName'] = this.fullName;
     return data;
   }
 }

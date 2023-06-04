@@ -13,6 +13,7 @@ abstract class AppDecorations {
     Color? bgColor,
     EdgeInsets? padding,
     BorderSide? border,
+    Size? size,
   }) {
     return ButtonStyle(
       shape: MaterialStateProperty.all(
@@ -21,9 +22,11 @@ abstract class AppDecorations {
           side: border ?? BorderSide.none,
         ),
       ),
+      fixedSize:MaterialStatePropertyAll(size),
       backgroundColor: MaterialStateProperty.all(bgColor ?? AppColors.white),
       overlayColor: MaterialStateProperty.all(AppColors.black.withOpacity(.2)),
       padding: MaterialStateProperty.all(padding),
+      
     );
   }
 }

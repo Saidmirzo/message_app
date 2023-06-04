@@ -40,13 +40,15 @@ class HeplerFunctions {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getBool(userLoggedInKey) ?? false;
   }
+
   static Future<String> getUserName() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    return sf.getString(userNameKey)??"" ;
+    return sf.getString(userNameKey) ?? "";
   }
+
   static Future<String> getUserEmail() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    return sf.getString(userEmailKey)??"" ;
+    return sf.getString(userEmailKey) ?? "";
   }
 }
 
@@ -74,38 +76,86 @@ void showProgress(BuildContext context) {
     ),
   );
 }
+
 popUpDialog(BuildContext context) {
   final TextEditingController groupController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            'Create group',
-            style: AppTextStyles.body16w4,
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(
+          'Create group',
+          style: AppTextStyles.body16w4,
+        ),
+        content: TextField(
+          controller: groupController,
+          decoration: const InputDecoration(border: OutlineInputBorder()),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              HeplerFunctions.getUserName().then(
+                (userName) {
+                  context.read<HomeBloc>().add(CreateGroupEvent(
+                        groupName: groupController.text,
+                        userName: userName,
+                      ));
+                  Navigator.pop(context);
+                },
+              );
+            },
+            icon: const Icon(Icons.assignment_turned_in_rounded),
+          )
+        ],
+      );
+    },
+  );
+}
+
+alertDialog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: AppColors.neutral700,
+        title: Text(
+          'Sign Out',
+          style: AppTextStyles.body16w4.copyWith(
+            color: AppColors.white,
           ),
-          content:  TextField(
-            controller: groupController,
-            decoration: const InputDecoration(border: OutlineInputBorder()),
+        ),
+        content: Text(
+          'Are you sure log out',
+          style: AppTextStyles.body20w7.copyWith(
+            color: AppColors.white,
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                HeplerFunctions.getUserName().then(
-                  (userName) {
-                    context.read<HomeBloc>().add(CreateGroupEvent(
-                          groupName: groupController.text,
-                          userName: userName,
-                        ));
-                    Navigator.pop(context);
-                  },
-                );
-              },
-              icon: const Icon(Icons.assignment_turned_in_rounded),
-            )
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            child: Text(
+              "NO",
+              style: AppTextStyles.body16w7.copyWith(
+                color: AppColors.primary400,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: Text(
+              "Yes",
+              style: AppTextStyles.body16w7.copyWith(
+                color: AppColors.white,
+              ),
+            ),
+          )
+        ],
+      );
+    },
+  );
+}

@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:message_app/config/constants/app_colors.dart';
 import 'package:message_app/config/constants/app_text_styles.dart';
 import 'package:message_app/config/routes/routes.dart';
@@ -10,7 +7,6 @@ import 'package:message_app/features/home/data/models/group_model.dart';
 import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:message_app/logic/helper_functions.dart';
 
-import '../../../auth/presentattion/bloc/auth_bloc.dart';
 import '../widgets/group_tile.dart';
 import '../widgets/no_group_widget.dart';
 
@@ -43,10 +39,8 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text('Home Page'),
         leading: IconButton(
-          onPressed: () {
-            context.read<AuthBloc>().add(LogOutEvent(context: context));
-          },
-          icon: const Icon(Icons.logout_outlined),
+          onPressed: () => Navigator.pushNamed(context, Routes.settingsPage),
+          icon: const Icon(Icons.settings_sharp),
         ),
         actions: [
           IconButton(
@@ -69,15 +63,6 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           } else if (state is HomeLoadedState) {
-            // List<GroupModel> listGroups = context.read<HomeBloc>().groups??[];
-            // return ListView.builder(
-            //   itemCount: listGroups.length,
-            //   itemBuilder: (context, index) {
-            //     return GroupTile(
-            //       groupModel: listGroups[index],
-            //     );
-            //   },
-            // );
             return Container(
               child: StreamBuilder(
                 stream: context.read<HomeBloc>().groups,
@@ -101,9 +86,7 @@ class _HomePageState extends State<HomePage> {
                       return const NoGroupsWidget();
                     }
                   } else {
-                    return const Center(
-                      child: Text('Loading'),
-                    );
+                    return const NoGroupsWidget();
                   }
                 },
               ),
