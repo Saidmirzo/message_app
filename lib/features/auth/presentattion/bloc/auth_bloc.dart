@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:message_app/config/routes/routes.dart';
-import 'package:message_app/features/auth/data/models/user_register_model.dart';
-import 'package:message_app/logic/auth_service.dart';
-import 'package:message_app/logic/helper_functions.dart';
+import '../../../../config/routes/routes.dart';
+import '../../data/models/user_register_model.dart';
+import '../../../../logic/auth_service.dart';
+import '../../../../logic/helper_functions.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:message_app/features/auth/data/models/user_model.dart';
+import '../../../../auth/data/models/user_model.dart';
 
 import '../../../../../logic/helper_functions.dart';
 import '../../../../../logic/storage_service.dart';

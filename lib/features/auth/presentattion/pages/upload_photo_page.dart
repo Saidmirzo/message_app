@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:message_app/config/constants/all_constants.dart';
-import 'package:message_app/features/auth/data/models/user_register_model.dart';
+import '../../../../config/constants/all_constants.dart';
+import '../../data/models/user_register_model.dart';
 
 import '../bloc/auth_bloc.dart';
 import '../widgets/custom_text_button.dart';

@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:message_app/features/auth/presentattion/bloc/auth_bloc.dart';
-import 'package:message_app/features/chat/presentation/bloc/chat/chat_bloc.dart';
-import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
-import 'package:message_app/features/settings/presentation/bloc/settings/settings_bloc.dart';
-import 'package:message_app/logic/auth_service.dart';
-import 'package:message_app/logic/storage_service.dart';
+import 'features/auth/presentattion/bloc/auth_bloc.dart';
+import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'features/home/presentation/bloc/home/home_bloc.dart';
+import 'features/settings/presentation/bloc/settings/settings_bloc.dart';
+import 'logic/auth_service.dart';
+import 'logic/storage_service.dart';
 
 import 'core/netwok/network_info.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';

@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:message_app/config/constants/app_colors.dart';
-import 'package:message_app/features/auth/presentattion/bloc/auth_bloc.dart';
-import 'package:message_app/features/chat/presentation/bloc/chat/chat_bloc.dart';
-import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
-import 'package:message_app/features/settings/presentation/bloc/settings/settings_bloc.dart';
+import 'config/constants/app_colors.dart';
+import 'features/auth/presentattion/bloc/auth_bloc.dart';
+import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'features/home/presentation/bloc/home/home_bloc.dart';
+import 'features/settings/presentation/bloc/settings/settings_bloc.dart';
 
 import 'config/constants/constants.dart';
 import 'config/routes/routes.dart';

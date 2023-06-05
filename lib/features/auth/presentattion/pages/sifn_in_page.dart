@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:message_app/config/routes/routes.dart';
-import 'package:message_app/features/auth/data/models/user_register_model.dart';
+import '../../../../config/routes/routes.dart';
+import '../../data/models/user_register_model.dart';
 
 import '../../../../config/constants/app_colors.dart';
 import '../../../../config/constants/app_text_styles.dart';

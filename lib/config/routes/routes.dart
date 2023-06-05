@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:message_app/features/auth/presentattion/pages/sifn_in_page.dart';
-import 'package:message_app/features/auth/presentattion/pages/upload_photo_page.dart';
-import 'package:message_app/features/chat/presentation/pages/chat_page.dart';
-import 'package:message_app/features/home/presentation/pages/home_page.dart';
-import 'package:message_app/features/home/presentation/pages/search_page.dart';
-import 'package:message_app/features/settings/presentation/pages/edit_profile_page.dart';
-import 'package:message_app/features/settings/presentation/pages/settings_page.dart';
-import 'package:message_app/main_page.dart';
-import 'package:message_app/splash_page.dart';
+import '../../features/auth/presentattion/pages/sifn_in_page.dart';
+import '../../features/auth/presentattion/pages/upload_photo_page.dart';
+import '../../features/chat/presentation/pages/chat_page.dart';
+import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/home/presentation/pages/search_page.dart';
+import '../../features/settings/presentation/pages/edit_profile_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../main_page.dart';
+import '../../splash_page.dart';
 
 import '../../features/auth/presentattion/pages/sign_up_page.dart';
 

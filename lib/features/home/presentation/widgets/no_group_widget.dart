@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:message_app/logic/helper_functions.dart';
+import '../../../../logic/helper_functions.dart';
 
 
 class NoGroupsWidget extends StatefulWidget {

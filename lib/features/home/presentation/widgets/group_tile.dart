@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:message_app/config/constants/app_colors.dart';
-import 'package:message_app/config/constants/assets.dart';
-import 'package:message_app/features/home/data/models/group_model.dart';
+import '../../../../config/constants/app_colors.dart';
+import '../../../../config/constants/assets.dart';
+import '../../data/models/group_model.dart';
 
 import '../../../../config/constants/app_text_styles.dart';
 import '../../../../config/routes/routes.dart';

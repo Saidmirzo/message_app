@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:message_app/config/constants/app_colors.dart';
-import 'package:message_app/config/constants/app_text_styles.dart';
-import 'package:message_app/config/routes/routes.dart';
-import 'package:message_app/features/home/data/models/group_model.dart';
-import 'package:message_app/features/home/presentation/bloc/home/home_bloc.dart';
-import 'package:message_app/logic/helper_functions.dart';
+import '../../../../config/constants/app_colors.dart';
+import '../../../../config/constants/app_text_styles.dart';
+import '../../../../config/routes/routes.dart';
+import '../../data/models/group_model.dart';
+import '../bloc/home/home_bloc.dart';
+import '../../../../logic/helper_functions.dart';
 
 import '../widgets/group_tile.dart';
 import '../widgets/no_group_widget.dart';

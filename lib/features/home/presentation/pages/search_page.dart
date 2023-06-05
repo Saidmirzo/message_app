@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:message_app/features/home/data/models/search_group_model.dart';
-import 'package:message_app/features/home/presentation/widgets/group_tile.dart';
+import '../../data/models/search_group_model.dart';
 
 import '../bloc/home/home_bloc.dart';
 

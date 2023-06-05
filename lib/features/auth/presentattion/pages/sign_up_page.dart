@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:message_app/features/auth/data/models/user_register_model.dart';
-import 'package:message_app/features/auth/presentattion/widgets/custom_text_button.dart';
+import '../../data/models/user_register_model.dart';
+import '../widgets/custom_text_button.dart';
 
 import '../../../../config/constants/app_colors.dart';
 import '../../../../config/constants/app_text_styles.dart';

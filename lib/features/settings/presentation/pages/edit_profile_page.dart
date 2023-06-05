@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:message_app/config/constants/app_colors.dart';
-import 'package:message_app/config/constants/app_text_styles.dart';
-import 'package:message_app/config/constants/assets.dart';
-import 'package:message_app/features/auth/data/models/user_model.dart';
-import 'package:message_app/features/auth/presentattion/widgets/custom_text_button.dart';
-import 'package:message_app/widgets/custom_avatar.dart';
+import '../../../../config/constants/app_colors.dart';
+import '../../../../config/constants/app_text_styles.dart';
+import '../../../../config/constants/assets.dart';
+import '../../../auth/data/models/user_model.dart';
+import '../../../auth/presentattion/widgets/custom_text_button.dart';
+import '../../../../widgets/custom_avatar.dart';
 
 import '../bloc/settings/settings_bloc.dart';
 

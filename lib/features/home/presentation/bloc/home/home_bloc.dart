@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:message_app/features/home/data/models/group_model.dart';
-import 'package:message_app/features/home/data/models/search_group_model.dart';
-import 'package:message_app/logic/helper_functions.dart';
+import '../../../data/models/group_model.dart';
+import '../../../data/models/search_group_model.dart';
+import '../../../../../logic/helper_functions.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

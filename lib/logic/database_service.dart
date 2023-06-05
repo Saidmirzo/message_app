@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:message_app/features/auth/data/models/user_model.dart';
-import 'package:message_app/features/auth/data/models/user_register_model.dart';
-import 'package:message_app/features/home/data/models/group_model.dart';
-import 'package:message_app/features/home/data/models/message_model.dart';
-import 'package:message_app/features/home/data/models/search_group_model.dart';
-import 'package:message_app/logic/helper_functions.dart';
+import '../features/auth/data/models/user_model.dart';
+import '../features/auth/data/models/user_register_model.dart';
+import '../features/home/data/models/group_model.dart';
+import '../features/home/data/models/message_model.dart';
+import '../features/home/data/models/search_group_model.dart';
+import 'helper_functions.dart';
 
 class DataBaseService {
   final String? uid;
