@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:message_app/features/auth/data/models/user_model.dart';
@@ -77,7 +78,6 @@ class DataBaseService {
           recentMessageSenderName: element["recentMessageSenderName"],
           recentMessageTime: element["recentMessageTime"]));
     }
-    // final group = await groupCollection.doc(groupId).get();
     return groupList;
   }
 
@@ -103,41 +103,67 @@ class DataBaseService {
     });
   }
 
-  Stream getChats(String groupId) {
+  Stream<List<MessageModel>> getChats(String groupId) {
     return groupCollection
         .doc(groupId)
         .collection("messages")
         .orderBy("time")
-        .snapshots();
+        .snapshots()
+        .map((event) => buildMessageModel(event));
   }
 
-  sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
-    await groupCollection
-        .doc(groupId)
-        .collection("messages")
-        .add(chatMessageData);
-
-    await groupCollection.doc(groupId).update({
-      "recentMessage": chatMessageData['message'],
-      "recentMessageSenderName": chatMessageData['sender'],
-      "recentMessageTime": chatMessageData['time'].toString(),
-    });
+  List<MessageModel> buildMessageModel(QuerySnapshot querySnapshot) {
+    final List<QueryDocumentSnapshot> list = querySnapshot.docs;
+    final List<MessageModel> messageList = [];
+    for (var element in list) {
+      messageList
+          .add(MessageModel.fromJson(jsonDecode(jsonEncode(element.data()))));
+    }
+    return messageList;
   }
-  // void sendMessage(String groupId, MessageModel messageModel) async {
+
+  // sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
   //   await groupCollection
   //       .doc(groupId)
   //       .collection("messages")
-  //       .add(messageModel.toJson());
+  //       .add(chatMessageData);
 
   //   await groupCollection.doc(groupId).update({
-  //     "recentMessage": messageModel.message,
-  //     "recentMessageSenderName": messageModel.senderName,
-  //     "recentMessageTime": messageModel.time,
+  //     "recentMessage": chatMessageData['message'],
+  //     "recentMessageSenderName": chatMessageData['sender'],
+  //     "recentMessageTime": chatMessageData['time'].toString(),
   //   });
   // }
+  void sendMessage(String groupId, MessageModel messageModel) async {
+    await groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .add(messageModel.toJson());
 
-  Future<QuerySnapshot> searchGroupByName(String name) {
-    return groupCollection.where("groupName", isEqualTo: name).get();
+    await groupCollection.doc(groupId).update({
+      "recentMessage": messageModel.message,
+      "recentMessageSenderName": messageModel.senderName,
+      "recentMessageTime": messageModel.time,
+    });
+  }
+
+  Future<List<SearchGroupModel>> searchGroupByName(String name) async {
+    final snapshot = await groupCollection.get();
+    final listDocSnapshot =
+        snapshot.docs.where((element) => element["groupName"].contains(name));
+
+    List<SearchGroupModel> list = [];
+    for (var element in listDocSnapshot) {
+      list.add(
+        SearchGroupModel(
+          groupImage: element["groupName"],
+          admin: element["admin"],
+          groupId: element["groupId"],
+          groupName: element["groupName"],
+        ),
+      );
+    }
+    return list;
   }
 
   Future toggleGroup(SearchGroupModel SearchGroupModel) async {

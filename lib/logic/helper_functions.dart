@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_app/config/constants/app_colors.dart';
@@ -5,6 +6,8 @@ import 'package:message_app/config/constants/app_text_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../features/home/presentation/bloc/home/home_bloc.dart';
+import '../injection_container.dart';
+import 'database_service.dart';
 
 class HeplerFunctions {
   static String userLoggedInKey = "userLoggedInKey";
@@ -158,4 +161,8 @@ alertDialog(BuildContext context) {
       );
     },
   );
+}
+
+DataBaseService getDataBaseService() {
+  return DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid);
 }

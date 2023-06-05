@@ -52,7 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoadingState());
         try {
           final bool? resultYes = await alertDialog(event.context);
-          log(resultYes.toString());
           if (resultYes != null && resultYes) {
             await authService.logOut();
             Navigator.pushReplacementNamed(event.context, Routes.splashPage);

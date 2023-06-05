@@ -6,6 +6,7 @@ import 'package:message_app/config/constants/app_colors.dart';
 import 'package:message_app/config/constants/app_text_styles.dart';
 import 'package:message_app/config/constants/assets.dart';
 import 'package:message_app/features/home/data/models/group_model.dart';
+import 'package:message_app/features/home/data/models/message_model.dart';
 
 import '../../../home/presentation/bloc/home/home_bloc.dart';
 import '../../../home/presentation/widgets/custom_button.dart';
@@ -61,7 +62,7 @@ class _ChatPageState extends State<ChatPage> {
                     stream: context.read<ChatBloc>().chats,
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        List messageList = snapshot.data.docs;
+                        List<MessageModel> messageList = snapshot.data;
                         messageList = messageList.reversed.toList();
                         return ListView.builder(
                           physics: const BouncingScrollPhysics(),
@@ -70,10 +71,10 @@ class _ChatPageState extends State<ChatPage> {
                           padding: EdgeInsets.symmetric(vertical: 100.h),
                           itemBuilder: (context, index) {
                             return MessageTile(
-                                message: messageList[index]['message'],
-                                sender: messageList[index]['sender'],
-                                sentByMe:
-                                    userName == messageList[index]['sender']);
+                              index: index,
+                              listMessages: messageList,
+                              messageModel: messageList[index],
+                            );
                           },
                         );
                       } else {
@@ -124,9 +125,9 @@ class _ChatPageState extends State<ChatPage> {
                             onTap: () {
                               context.read<ChatBloc>().add(
                                     SendMessageEvent(
-                                        groupId: groupModel.groupId,
-                                        userName: userName,
-                                        message: textEditingController.text),
+                                      groupId: groupModel.groupId,
+                                      message: textEditingController.text,
+                                    ),
                                   );
                               textEditingController.clear();
                             },
