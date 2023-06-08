@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:message_app/logic/helper_functions.dart';
 import '../../../../config/constants/app_colors.dart';
 import '../../../../config/constants/app_text_styles.dart';
 import '../../../home/data/models/message_model.dart';
@@ -41,8 +42,14 @@ class _MessageTileState extends State<MessageTile> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Text(
+            formatTime(widget.messageModel.time ?? ""),
+            style: AppTextStyles.body14w4.copyWith(
+              color: AppColors.neutral200,
+            ),
+          ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 4.h),
+            margin: EdgeInsets.symmetric(vertical: 4.h).copyWith(left: 12.w),
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
               color: AppColors.primary400,
@@ -61,7 +68,6 @@ class _MessageTileState extends State<MessageTile> {
       );
     } else {
       return Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Visibility(
             visible: drawImage(),
@@ -70,6 +76,7 @@ class _MessageTileState extends State<MessageTile> {
               child: Container(
                 height: 40.h,
                 width: 40.h,
+                margin: EdgeInsets.only(top: 25.h),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -94,7 +101,7 @@ class _MessageTileState extends State<MessageTile> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 4.h),
+            margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
               color: AppColors.neutral800,
@@ -119,6 +126,12 @@ class _MessageTileState extends State<MessageTile> {
                 ),
               ],
             ),
+          ),
+          Text(
+            formatTime(widget.messageModel.time ?? ""),
+            style: AppTextStyles.body14w4.copyWith(
+              color: AppColors.neutral200,
+            ),
           )
         ],
       );
@@ -126,7 +139,6 @@ class _MessageTileState extends State<MessageTile> {
   }
 
   bool drawImage() {
-    bool result;
     if (widget.index - 1 >= 0) {
       return widget.listMessages[widget.index - 1].senderId !=
           widget.messageModel.senderId;

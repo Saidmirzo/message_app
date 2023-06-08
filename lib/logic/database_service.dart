@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../features/auth/data/models/user_model.dart';
@@ -153,28 +154,30 @@ class DataBaseService {
 
     List<SearchGroupModel> list = [];
     for (var element in listDocSnapshot) {
+      final item = element.data() as Map<String, dynamic>;
       list.add(
         SearchGroupModel(
-          groupImage: element["groupName"],
-          admin: element["admin"],
-          groupId: element["groupId"],
-          groupName: element["groupName"],
+          groupImage: item["groupIcon"].isEmpty?null:item["groupIcon"],
+          admin: item["admin"],
+          groupId: item["groupId"],
+          groupName: item["groupName"],
+          membersCount: item["members"].length,
         ),
       );
     }
     return list;
   }
 
-  Future toggleGroup(SearchGroupModel SearchGroupModel) async {
+  Future toggleGroup(SearchGroupModel searchGroupModel) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference =
-        groupCollection.doc(SearchGroupModel.groupId);
+        groupCollection.doc(searchGroupModel.groupId);
 
     final String userName = await HeplerFunctions.getUserName();
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
     List groups = documentSnapshot["groups"];
     final String groupItem =
-        "${SearchGroupModel.groupId}_${SearchGroupModel.groupName}";
+        "${searchGroupModel.groupId}_${searchGroupModel.groupName}";
     final String userItem = "${uid}_$userName";
 
     if (groups.contains(groupItem)) {

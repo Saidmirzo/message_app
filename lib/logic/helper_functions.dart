@@ -165,3 +165,14 @@ alertDialog(BuildContext context) {
 DataBaseService getDataBaseService() {
   return DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid);
 }
+
+String formatTime(String value) {
+    DateTime date;
+    if (value.isEmpty) {
+      return "";
+    } else {
+      final int time = int.parse(value);
+      date = DateTime.fromMillisecondsSinceEpoch(time);
+    }
+    return "${date.hour}:${date.minute}";
+  }

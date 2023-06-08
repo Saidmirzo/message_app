@@ -2,11 +2,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../auth/data/models/user_model.dart';
 import '../../../../home/data/models/message_model.dart';
-
-import '../../../../../logic/database_service.dart';
 import '../../../../../logic/helper_functions.dart';
 
 part 'chat_event.dart';

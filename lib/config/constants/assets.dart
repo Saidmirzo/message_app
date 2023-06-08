@@ -34,6 +34,8 @@ class _Icons extends _AssetsHolder {
 
   String get check => "$basePath/check_ic.svg";
 
+  String get search => "$basePath/search.svg";
+
 }
 
 class _Images extends _AssetsHolder {

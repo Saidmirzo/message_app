@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../config/constants/app_colors.dart';
 import '../../../../config/constants/assets.dart';
+import '../../../../logic/helper_functions.dart';
 import '../../data/models/group_model.dart';
 
 import '../../../../config/constants/app_text_styles.dart';
@@ -83,16 +84,7 @@ class GroupTile extends StatelessWidget {
     return value.substring(0, value.indexOf('_'));
   }
 
-  String formatTime(String value) {
-    DateTime date;
-    if (value.isEmpty) {
-      return "";
-    } else {
-      final int time = int.parse(value);
-      date = DateTime.fromMillisecondsSinceEpoch(time);
-    }
-    return "${date.hour}:${date.minute}";
-  }
+  
 }
 
 

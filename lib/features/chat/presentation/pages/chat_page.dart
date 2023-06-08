@@ -28,7 +28,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   late final GroupModel groupModel = widget.groupModel;
   final TextEditingController textEditingController = TextEditingController();
-  late final String userName = context.read<HomeBloc>().userName ?? "Saidmirza";
+  late final String userName = context.read<HomeBloc>().userModel.fullName ?? "Saidmirza";
   @override
   void initState() {
     super.initState();
@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, state) {
           if (state is ChatLoadedState) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(Assets.images.chatBg),
