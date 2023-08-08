@@ -16,6 +16,8 @@ abstract class AppColors {
   static Color black = const Color(0xff000000);
   static Color white = const Color(0xffffffff);
   static Color divider = const Color(0xffEAEEF2);
+  static Color opacity44 = const Color(0xff081C2C).withOpacity(.44);
+
 
   static Color appBarColor = const Color(0xff163043);
 

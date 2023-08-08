@@ -1,41 +1,67 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:message_app/config/constants/assets.dart';
 
 import '../config/constants/app_colors.dart';
 
+// ignore: must_be_immutable
 class CustomAvatar extends StatelessWidget {
-  const CustomAvatar({
+  CustomAvatar({
     super.key,
     required this.size,
     this.image,
     this.filePath,
-    this.link, this.margin, this.border,
+    this.link,
+    this.margin,
+    this.isSelected = false,
+    this.border = false,
   });
   final double size;
   final String? image;
   final String? filePath;
   final String? link;
   final EdgeInsets? margin;
-  final bool? border;
+  bool isSelected;
+  bool border;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: size,
-      width: size,
-      margin: margin,
-      decoration: BoxDecoration(
-        border: border == true
-            ? Border.all(color: AppColors.white, width: 4)
-            : null,
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
-          image: getImages(),
+    return Stack(
+      children: [
+        Container(
+          height: size,
+          width: size,
+          margin: margin,
+          decoration: BoxDecoration(
+            border: (border) || (isSelected)
+                ? Border.all(
+                    color: isSelected ? AppColors.primary400 : AppColors.white,
+                    width: 4,
+                  )
+                : null,
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              image: getImages(),
+            ),
+          ),
         ),
-      ),
+        isSelected
+            ? Container(
+                height: size,
+                width: size,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.opacity44,
+                ),
+                child: isSelected ? SvgPicture.asset(Assets.icons.check) : null,
+              )
+            : const SizedBox.shrink()
+      ],
     );
 
     // return ClipRRect(
@@ -67,8 +93,7 @@ class CustomAvatar extends StatelessWidget {
   ImageProvider getImages() {
     if (filePath != null) {
       return FileImage(File(filePath!));
-    } else 
-    if (link != null) {
+    } else if (link != null) {
       return NetworkImage(link!);
     } else {
       return AssetImage(image!);

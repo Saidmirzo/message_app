@@ -36,6 +36,14 @@ class DataBaseService {
     return snapshot;
   }
 
+  Future<List<UserModel>> getAllUsers() async {
+    QuerySnapshot snapshot = await userCollection.limit(20).get();
+    List<UserModel> listUsers = snapshot.docs
+        .map((e) => UserModel.fromJson(jsonDecode(jsonEncode(e.data()))))
+        .toList();
+    return listUsers;
+  }
+
   Future updateUserinfo(UserModel userModel) async {
     final DocumentReference docUser = userCollection.doc(userModel.uid);
     await docUser.update(userModel.toJson());
@@ -157,7 +165,7 @@ class DataBaseService {
       final item = element.data() as Map<String, dynamic>;
       list.add(
         SearchGroupModel(
-          groupImage: item["groupIcon"].isEmpty?null:item["groupIcon"],
+          groupImage: item["groupIcon"].isEmpty ? null : item["groupIcon"],
           admin: item["admin"],
           groupId: item["groupId"],
           groupName: item["groupName"],

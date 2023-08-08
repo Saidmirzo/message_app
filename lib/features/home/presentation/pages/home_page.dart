@@ -5,8 +5,8 @@ import '../../../../config/constants/app_text_styles.dart';
 import '../../../../config/routes/routes.dart';
 import '../../data/models/group_model.dart';
 import '../bloc/home/home_bloc.dart';
-import '../../../../logic/helper_functions.dart';
 
+import '../widgets/create_group_bottom_sheet.dart';
 import '../widgets/group_tile.dart';
 import '../widgets/no_group_widget.dart';
 
@@ -29,8 +29,16 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: AppColors.neutral900,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primary400,
         onPressed: () {
-          popUpDialog(context);
+          showModalBottomSheet(
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return const CreateGroupBottomSheet();
+            },
+          );
         },
         child: const Icon(Icons.add),
       ),

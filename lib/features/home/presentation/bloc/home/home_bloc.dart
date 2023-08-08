@@ -12,14 +12,17 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<List<GroupModel>>? groups;
-  UserModel userModel =UserModel();
+  List<UserModel>? listUsers;
+  UserModel userModel = UserModel();
   List<SearchGroupModel> listSearchGroupResult = [];
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
     on<GetGroupListEvent>(
       (event, emit) async {
         emit(HomeLoadingState());
-        userModel = await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid).getUserInfoWithUserId();
+        userModel =
+            await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+                .getUserInfoWithUserId();
         try {
           groups = await getDataBaseService().getUserGroups();
 
@@ -61,6 +64,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (event, emit) async {
         await getDataBaseService().toggleGroup(event.searchGroupModel);
         add(GetGroupListEvent());
+      },
+    );
+    on<GetAllUsers>(
+      (event, emit) async {
+        emit(HomeLoadingState());
+        try {
+          listUsers = await getDataBaseService().getAllUsers();
+          emit(HomeLoadedState());
+        } catch (e) {
+          emit(HomeErrorState(message: e.toString()));
+        }
       },
     );
   }

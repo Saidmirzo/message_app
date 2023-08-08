@@ -26,3 +26,5 @@ class ToggleGroupEvent extends HomeEvent {
   final SearchGroupModel searchGroupModel;
   const ToggleGroupEvent({required this.searchGroupModel});
 }
+
+class GetAllUsers extends HomeEvent{}
