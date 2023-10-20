@@ -30,3 +30,4 @@ class LogOutEvent extends AuthEvent {
 
 class UploadImageEvent extends AuthEvent{
 }
+class GoogleSignIn extends AuthEvent{}

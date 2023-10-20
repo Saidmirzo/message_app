@@ -16,7 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService authService;
   final ImagePicker imagePicker;
   String userImage = '';
-  AuthBloc({required  this.imagePicker, required this.authService}) : super(AuthInitial()) {
+  AuthBloc({required this.imagePicker, required this.authService})
+      : super(AuthInitial()) {
     on<AuthEvent>((event, emit) {});
     on<RegisterUserEvent>(
       (event, emit) async {
@@ -70,6 +71,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               await imagePicker.pickImage(source: ImageSource.gallery);
           userImage = xFile!.path;
           emit(ImageUploadedState());
+        } catch (e) {
+          emit(AuthErrorState(message: e.toString()));
+        }
+      },
+    );
+
+    on<GoogleSignIn>(
+      (event, emit) async {
+        emit(AuthLoadingState());
+        try {
+          await authService.googleSignIn();
+          emit(AuthLoadedState());
         } catch (e) {
           emit(AuthErrorState(message: e.toString()));
         }

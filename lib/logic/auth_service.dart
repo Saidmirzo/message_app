@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../features/auth/data/models/user_register_model.dart';
 import 'database_service.dart';
 import 'helper_functions.dart';
@@ -51,6 +53,26 @@ class AuthService {
           await dataBaseService.getUserInfo(user.email!);
       HeplerFunctions.saveUserInfoToSf(
           true, snapshot.docs.first['email'], snapshot.docs.first['fullName']);
+    }
+  }
+
+  Future googleSignIn() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    try {
+      // 
+
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      // final GoogleSignInAuthentication googleSignInAuthentication =
+      //     await googleSignInAccount!.authentication;
+      log(googleSignInAccount!.email.toString());
+      // final AuthCredential credential = GoogleAuthProvider.credential(
+      //   accessToken: googleSignInAuthentication.accessToken,
+      //   idToken: googleSignInAuthentication.idToken,
+      // );
+      // await firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
     }
   }
 }

@@ -28,7 +28,8 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   late final GroupModel groupModel = widget.groupModel;
   final TextEditingController textEditingController = TextEditingController();
-  late final String userName = context.read<HomeBloc>().userModel.fullName ?? "Saidmirza";
+  late final String userName =
+      context.read<HomeBloc>().userModel.fullName ?? "Saidmirza";
   @override
   void initState() {
     super.initState();
@@ -54,6 +55,7 @@ class _ChatPageState extends State<ChatPage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(Assets.images.chatBg),
+                  fit: BoxFit.cover,
                 ),
               ),
               child: Stack(

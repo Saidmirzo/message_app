@@ -95,7 +95,13 @@ class _SignInPageState extends State<SignInPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset(Assets.icons.google, height: 80.h),
+                      InkWell(
+                        onTap: () {
+                          context.read<AuthBloc>().add(GoogleSignIn());
+                        },
+                        child:
+                            SvgPicture.asset(Assets.icons.google, height: 80.h),
+                      ),
                     ],
                   ),
                 ),
