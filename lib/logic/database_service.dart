@@ -176,6 +176,24 @@ class DataBaseService {
     return list;
   }
 
+  // Future deleteAccaunt() async {
+  //   DocumentReference userDocumentReference = userCollection.doc(uid);
+  //   DocumentSnapshot documentSnapshot = await userDocumentReference.get();
+  //   List groups = documentSnapshot["groups"];
+  //   groups.forEach((element) async {
+  //     QuerySnapshot groupQuery = await groupCollection
+  //         .where("grouId", isEqualTo: element.toString().split('_')[0])
+  //         .get();
+  //     for (var element in groupQuery.docChanges) {
+  //       element.
+  //     }
+  //   });
+
+  //   final String userName = await HeplerFunctions.getUserName();
+
+  //   final String member = "${uid}_$userName";
+  // }
+
   Future toggleGroup(SearchGroupModel searchGroupModel) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference =

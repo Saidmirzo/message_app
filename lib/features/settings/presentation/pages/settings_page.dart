@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:message_app/features/settings/presentation/widgets/settings_button.dart';
 import '../../../../config/constants/app_colors.dart';
 import '../../../../config/constants/app_text_styles.dart';
 import '../../../../config/constants/assets.dart';
@@ -96,30 +97,19 @@ class _SettingsPageState extends State<SettingsPage> {
                         thickness: 1,
                       ),
                     ),
-                    InkWell(
-                      onTap: () => context
-                          .read<AuthBloc>()
-                          .add(LogOutEvent(context: context)),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 35.h,
-                            width: 35.h,
-                            margin: EdgeInsets.only(right: 12.w),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: AppColors.neutral600,
-                                shape: BoxShape.circle),
-                            child: SvgPicture.asset(Assets.icons.logout),
+                    SettingsButton(
+                      ontap: () => context.read<AuthBloc>().add(
+                            LogOutEvent(context: context),
                           ),
-                          Text(
-                            'Logout',
-                            style: AppTextStyles.body16w5.copyWith(
-                              color: AppColors.white,
-                            ),
+                      title: 'Logout',
+                      iconPath: Assets.icons.logout,
+                    ),
+                    SettingsButton(
+                      ontap: () => context.read<AuthBloc>().add(
+                            LogOutEvent(context: context),
                           ),
-                        ],
-                      ),
+                      title: 'Delete accaunt',
+                      iconPath: Assets.icons.logout,
                     )
                   ],
                 ),
